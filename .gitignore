@@ -1,0 +1,13 @@
+.env 
+__pycache__/ 
+*.pyc 
+*.log 
+secrets.toml
+venv/
+.venv/
+test_groq.py
+jupyter notebooks/
+*.pkl
+*.csv
+
+
