@@ -51,16 +51,21 @@ if (
         st.session_state.user_email    = result["email"]
     st.rerun()
 
-#Load custom CSS
+# Load custom CSS cleanly via st.html
 def load_css():
     try:
         css_path = Path(__file__).parent / 'assets' / 'styles.css'
-        with open(css_path, 'r') as f:
-            return f'<style>{f.read()}</style>'
-    except FileNotFoundError:
+        with open(css_path, 'r', encoding='utf-8') as f:
+            return f'<style>\n{f.read()}\n</style>'
+    except Exception:
         return ''
 
-st.markdown(load_css(), unsafe_allow_html=True)
+css_code = load_css()
+if css_code:
+    try:
+        st.html(css_code)
+    except AttributeError:
+        st.markdown(css_code, unsafe_allow_html=True)
 
 # Initialize session state for view management
 if 'current_view' not in st.session_state:
@@ -146,8 +151,10 @@ with st.sidebar:
                     st.session_state.user_email    = result["email"]
                 st.rerun()
 
-        st.markdown("<div style='text-align:center; margin: 8px 0; color:#94a3b8;'>or</div>",
-                    unsafe_allow_html=True)
+        try:
+            st.html("<div style='text-align:center; margin: 8px 0; color:#94a3b8;'>or</div>")
+        except AttributeError:
+            st.markdown("<div style='text-align:center; margin: 8px 0; color:#94a3b8;'>or</div>", unsafe_allow_html=True)
 
         # Google SVG logo (official colours)
         google_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20" style="vertical-align:middle;margin-right:10px;">
@@ -161,19 +168,23 @@ with st.sidebar:
         if "error" in oauth:
             st.caption(f"Google sign-in unavailable: {oauth['error']}")
         else:
-            st.markdown(
-                f"""<a href="{oauth['url']}" target="_self" style="
-                    display:flex; align-items:center; justify-content:center;
-                    width:100%; padding:0.5rem 1rem;
-                    background:white; color:#3c4043;
-                    border:1px solid #dadce0; border-radius:6px;
-                    text-decoration:none; font-size:0.95rem; font-weight:500;
-                    margin-top:4px; box-sizing:border-box;
-                ">{google_svg} Continue with Google</a>""",
-                unsafe_allow_html=True,
-            )
+            google_html = f"""<a href="{oauth['url']}" target="_self" style="
+                display:flex; align-items:center; justify-content:center;
+                width:100%; padding:0.5rem 1rem;
+                background:white; color:#3c4043;
+                border:1px solid #dadce0; border-radius:6px;
+                text-decoration:none; font-size:0.95rem; font-weight:500;
+                margin-top:4px; box-sizing:border-box;
+            ">{google_svg} Continue with Google</a>"""
+            try:
+                st.html(google_html)
+            except AttributeError:
+                st.markdown(google_html, unsafe_allow_html=True)
 
-        st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
+        try:
+            st.html("<div style='margin-top:8px'></div>")
+        except AttributeError:
+            st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
         # GitHub SVG logo
         github_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;margin-right:10px;fill:white;">
@@ -184,17 +195,18 @@ with st.sidebar:
         if "error" in gh_oauth:
             st.caption(f"GitHub sign-in unavailable: {gh_oauth['error']}")
         else:
-            st.markdown(
-                f"""<a href="{gh_oauth['url']}" target="_self" style="
-                    display:flex; align-items:center; justify-content:center;
-                    width:100%; padding:0.5rem 1rem;
-                    background:#24292e; color:white;
-                    border-radius:6px; text-decoration:none;
-                    font-size:0.95rem; font-weight:500;
-                    margin-top:8px; box-sizing:border-box;
-                ">{github_svg} Continue with GitHub</a>""",
-                unsafe_allow_html=True,
-            )
+            gh_html = f"""<a href="{gh_oauth['url']}" target="_self" style="
+                display:flex; align-items:center; justify-content:center;
+                width:100%; padding:0.5rem 1rem;
+                background:#24292e; color:white;
+                border-radius:6px; text-decoration:none;
+                font-size:0.95rem; font-weight:500;
+                margin-top:8px; box-sizing:border-box;
+            ">{github_svg} Continue with GitHub</a>"""
+            try:
+                st.html(gh_html)
+            except AttributeError:
+                st.markdown(gh_html, unsafe_allow_html=True)
 
 # Main content area - render based on current view
 if st.session_state.current_view == 'landing':
