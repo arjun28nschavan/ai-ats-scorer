@@ -1,11 +1,13 @@
 #!/bin/bash
 set -e
 
-echo "Starting FastAPI Backend on port 8000..."
-uvicorn backend.main:app --host 127.0.0.1 --port 8000 &
+# Start FastAPI backend on internal loopback (127.0.0.1:8000)
+echo "Starting FastAPI Backend on 127.0.0.1:8000..."
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 &
 BACKEND_PID=$!
 
-echo "Waiting for FastAPI Backend to be healthy..."
+# Wait for FastAPI Backend to be ready
+echo "Waiting for FastAPI Backend to be ready..."
 for i in {1..30}; do
     if curl -s http://127.0.0.1:8000/api/v1/health | grep -q "healthy"; then
         echo "FastAPI Backend is ready!"
@@ -14,9 +16,9 @@ for i in {1..30}; do
     sleep 1
 done
 
-# Render passes the listening port via $PORT (default to 10000 on Render, or 8501)
-PORT="${PORT:-10000}"
-echo "Starting Streamlit Frontend on public port $PORT..."
+# Set default port to 8501 (or $PORT if set by container host)
+PORT="${PORT:-8501}"
+echo "Starting Streamlit Frontend on port $PORT..."
 python -m streamlit run frontend/streamlit_app.py \
     --server.port "$PORT" \
     --server.address 0.0.0.0 \

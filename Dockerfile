@@ -3,7 +3,7 @@ FROM python:3.11-slim-bookworm
 # Prevent Python from writing pyc files and buffer stdout/stderr
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PORT=7860 \
+    PORT=8501 \
     BACKEND_URL=http://127.0.0.1:8000 \
     SPACY_MODEL=en_core_web_sm \
     GROQ_MODEL=openai/gpt-oss-20b
@@ -38,7 +38,7 @@ COPY . .
 RUN chmod +x start.sh
 
 # Expose ports
-EXPOSE 7860 8501
+EXPOSE 8501 8000
 
 # Start both FastAPI backend and Streamlit frontend
 CMD ["./start.sh"]

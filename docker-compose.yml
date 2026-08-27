@@ -5,12 +5,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: ai-ats-scorer:latest
     container_name: ai-ats-scorer
     ports:
-      - "8501:7860"
+      - "8501:8501"
       - "8000:8000"
     environment:
-      - PORT=7860
+      - PORT=8501
       - BACKEND_URL=http://127.0.0.1:8000
       - GROQ_MODEL=openai/gpt-oss-20b
       - GROQ_API_KEY=${GROQ_API_KEY}
