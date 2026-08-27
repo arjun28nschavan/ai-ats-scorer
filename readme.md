@@ -1,3 +1,14 @@
+---
+title: AI ATS Scorer
+emoji: 📄
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+sdk_version: 5.20.0
+app_file: app.py
+pinned: false
+---
+
 # ATS Resume Scorer
 
 A web app that scores how well a resume matches a job description and returns actionable feedback. Built with FastAPI + Streamlit, using spaCy and Sentence Transformers for NLP and the Groq API for LLM-generated suggestions.
