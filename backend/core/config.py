@@ -16,13 +16,7 @@ APP_TITLE='ATS RESUME ANALYZER API'
 APP_VERSION='1.0.0'
 APP_DESCRIPTION='analyse resumes against job description using nlp + ml'
 
-ALLOWED_ORIGINS = [
-    "http://localhost:5173", # vite dev server (React)
-    "http://localhost:3000", # create React App fallback
-    "http://127.0.0.1:5173",
-    "http://localhost:8501", # Streamlit frontend
-    # 'https://appapppy-ktwxupi73vqhjzweksze9d.streamlit.app/'
-]  
+ALLOWED_ORIGINS = ["*"]  
 
 #file 
 MAX_FILE_SIZE_MB=5

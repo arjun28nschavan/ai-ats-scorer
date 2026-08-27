@@ -42,7 +42,9 @@ def get_oauth_redirect_url() -> str:
         if sec_url and not sec_url.endswith('/auth/v1/callback') and 'supabase.co' not in sec_url:
             return sec_url
 
-    # 3. Check if deployed on Streamlit Cloud (Linux container)
+    # 3. Check if deployed on Render or Streamlit Cloud
+    if os.getenv('RENDER_EXTERNAL_URL'):
+        return os.getenv('RENDER_EXTERNAL_URL')
     if os.path.exists('/mount/src') or os.getenv('STREAMLIT_SHARING_HOST'):
         return 'https://ai-ats-scorer.streamlit.app'
 
