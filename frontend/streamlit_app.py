@@ -31,12 +31,17 @@ for key, default in [
 if (
     not st.session_state.access_token
     and "code" in st.query_params
+    and not st.session_state.get("_oauth_processed")
 ):
+    st.session_state["_oauth_processed"] = True
     from frontend.services import supabase_client as _sc
     code_param = st.query_params["code"]
     cv_param = st.query_params.get("cv", "")
     result = _sc.exchange_code_for_session(code_param, code_verifier=cv_param)
-    st.query_params.clear()
+    try:
+        st.query_params.clear()
+    except Exception:
+        pass
     if "error" in result:
         st.session_state.auth_error = f"Sign-in failed: {result['error']}"
     else:
