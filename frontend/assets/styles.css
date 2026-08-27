@@ -1,3 +1,8 @@
+/* Hide Streamlit form input instruction helper */
+div[data-testid="InputInstructions"] {
+    display: none !important;
+}
+
 :root {
     /* Primary Colors */
     --primary-color: #4F46E5;
