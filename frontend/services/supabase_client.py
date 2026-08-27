@@ -181,16 +181,16 @@ def exchange_code_for_session(auth_code: str, code_verifier: str = '') -> Dict[s
             or client.auth._storage.get_item(storage_key)
             or ''
         )
+        redirect_base = get_oauth_redirect_url()
         if verifier:
             client.auth._storage.set_item(storage_key, verifier)
-            redirect_to_used = f"{OAUTH_REDIRECT_URL}?cv={verifier}"
+            redirect_to_used = f"{redirect_base}?cv={verifier}"
         else:
-            redirect_to_used = OAUTH_REDIRECT_URL
+            redirect_to_used = redirect_base
 
         resp = client.auth.exchange_code_for_session({
             'auth_code': auth_code,
             'code_verifier': verifier,
-            'redirect_to': redirect_to_used,
         })
         if not resp.session or not resp.user:
             return {'error': 'OAuth exchange returned no session'}
