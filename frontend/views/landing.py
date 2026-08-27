@@ -3,8 +3,8 @@ import streamlit as st
 
 def render():
     
-    # Landing page CSS
-    st.markdown("""
+    # Hero Section with embedded styles via st.html
+    hero_html = """
     <style>
         .main-header {
             text-align: center;
@@ -19,18 +19,28 @@ def render():
             font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            color: white;
+        }
+        .main-header h3 {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+        }
+        .main-header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
         }
     </style>
-    """, unsafe_allow_html=True)
-    
-    # Hero Section
-    st.markdown("""
     <div class="main-header">
         <h1>🎯 ATS Resume Scorer</h1>
         <h3>Optimize Your Resume for Applicant Tracking Systems</h3>
         <p>Get instant feedback on your resume's ATS compatibility with AI-powered analysis</p>
     </div>
-    """, unsafe_allow_html=True)
+    """
+    try:
+        st.html(hero_html)
+    except AttributeError:
+        st.markdown(hero_html, unsafe_allow_html=True)
     
     # Call-to-Action Button
     col1, col2, col3 = st.columns([1, 2, 1])

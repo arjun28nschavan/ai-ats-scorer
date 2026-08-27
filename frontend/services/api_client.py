@@ -6,7 +6,7 @@ import streamlit as st
 
 import os
 
-DEFAULT_BACKEND_URL = "http://localhost:8000"
+DEFAULT_BACKEND_URL = "http://127.0.0.1:8000"
 
 
 def _backend_url() -> str:

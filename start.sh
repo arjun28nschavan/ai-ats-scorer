@@ -17,10 +17,15 @@ done
 # Render passes the listening port via $PORT (default to 10000 on Render, or 8501)
 PORT="${PORT:-10000}"
 echo "Starting Streamlit Frontend on public port $PORT..."
-exec streamlit run frontend/streamlit_app.py \
+python -m streamlit run frontend/streamlit_app.py \
     --server.port "$PORT" \
     --server.address 0.0.0.0 \
     --server.enableCORS false \
     --server.enableXsrfProtection false \
     --server.headless true \
-    --browser.gatherUsageStats false
+    --browser.gatherUsageStats false &
+STREAMLIT_PID=$!
+
+trap "kill -TERM $BACKEND_PID $STREAMLIT_PID" SIGTERM SIGINT
+
+wait -n $STREAMLIT_PID $BACKEND_PID
