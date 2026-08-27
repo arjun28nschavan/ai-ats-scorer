@@ -6,6 +6,17 @@ from pathlib import Path
 # regardless of the directory streamlit was launched from.
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+# Ensure FastAPI backend is running in background on port 8000
+import subprocess
+try:
+    import requests
+    requests.get("http://127.0.0.1:8000/api/v1/health", timeout=0.5)
+except Exception:
+    subprocess.Popen([
+        sys.executable, "-m", "uvicorn", "backend.main:app",
+        "--host", "127.0.0.1", "--port", "8000"
+    ])
+
 # Configure page
 st.set_page_config(
     page_title="ATS Resume Scorer",
